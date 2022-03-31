@@ -22,9 +22,7 @@ df = get_videos(API_KEY, CHANNEL_ID, pages_number)
 t1 = time.time()
 print(f"Videos data extracted: {(t1-t0)/60} mins")
 
-df.tail()
-
-
+#df.tail()
 
 ### Cleaning dataframe
 

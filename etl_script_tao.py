@@ -24,8 +24,6 @@ print(f"Videos data extracted: {(t1-t0)/60} mins")
 
 #df.tail()
 
-
-
 ### Cleaning dataframe
 
 

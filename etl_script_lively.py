@@ -88,8 +88,6 @@ print(f"Db updated: {(t1-t0)/60} mins")
 
 #new_data_df.shape
 
-
-
 append_new_data_to_db(new_data_df)
 
 t_end = time.time()
