@@ -11,7 +11,7 @@ t_start = time.time()
 API_KEY = 'AIzaSyBzVOeHPZ2tMxMxx2djhU3Zj_ztgKTtM6U'
 CHANNEL_ID = 'UCG6orNVuXIICv9_ifH6msIA' #shaggi 12
 
-from firstpackage.getvideos.getvideos_module import get_videos, get_no_of_pages
+from package.getvideos.getvideos_module import get_videos, get_no_of_pages
 
 pages_number = get_no_of_pages(CHANNEL_ID, API_KEY)
 
@@ -30,7 +30,7 @@ df.tail()
 
 
 
-from firstpackage.cleandf.cleandf_module import clean_title_string, clean_casts
+from package.cleandf.cleandf_module import clean_title_string, clean_casts
 
 def split_title_and_datetime(df):
     import numpy as np
@@ -69,7 +69,7 @@ df2 = df2.replace({np.nan: None})
 
 
 
-from firstpackage.updatedatabase.update_module_sh import update_db, append_new_data_to_db
+from package.updatedatabase.update_module_sh import update_db, append_new_data_to_db
 
 t0 = time.time()
 new_data_df = update_db(df2)
