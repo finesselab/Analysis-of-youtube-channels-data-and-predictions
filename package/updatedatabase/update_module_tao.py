@@ -1,13 +1,11 @@
-#import pypyodbc as podbc
 import pyodbc
 import pandas as pd
 
 conn2 = pyodbc.connect('DRIVER={ODBC Driver 18 for SQL Server};'
-                                'Server=finesserds.cahwy5tcsaqu.us-east-1.rds.amazonaws.com,1433;'
-                                'Database=Youtube_data;'
-                                'uid=admin;pwd=gloryboy;'
+                                'Server=finesxxx.xxxx.xxxxxxx.amazonaws.com,xxxx;'
+                                'Database=xxxxxxxx;'
+                                'uid=xxxxx;pwd=xxxxxx;'
                                 'TrustServerCertificate=yes;')
-
 
 print ("Connected")
 cursor = conn2.cursor()
