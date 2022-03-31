@@ -70,6 +70,7 @@ def append_new_data_to_db(dff):
                           row['view_count'], row['like_count'], row['dislike_count'], row['comment_count'],
                           row['video_duration'])
 
+
     conn2.commit()
     conn2.close()
     print('Updated database!, Connection closed')
