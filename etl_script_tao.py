@@ -8,7 +8,7 @@ print(f"Run start time: {now.strftime('%Y-%m-%d %H:%M:%S')}")
 
 t_start = time.time()
 
-API_KEY = 'AIzaSyDFCOnb-YXXurEO3D1zjmqbSCRkbCc7Yjo'
+API_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxxxx'
 CHANNEL_ID = "UCvG_RH3tAekGN5rPUVUmcIg" #taaooma 6
 
 from package.getvideos.getvideos_module import get_videos, get_no_of_pages

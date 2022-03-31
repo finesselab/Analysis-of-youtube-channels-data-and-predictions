@@ -8,7 +8,7 @@ print(f"Run start time: {now.strftime('%Y-%m-%d %H:%M:%S')}")
 
 t_start = time.time()
 
-API_KEY = 'AIzaSyBzVOeHPZ2tMxMxx2djhU3Zj_ztgKTtM6U'
+API_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 CHANNEL_ID = 'UCxAkiUiL3KnMl0BIFBv6xxA' #macaroni
 
 page_token = ""

@@ -8,7 +8,7 @@ print(f"Run start time: {now.strftime('%Y-%m-%d %H:%M:%S')}")
 
 t_start = time.time()
 
-API_KEY = 'AIzaSyDFCOnb-YXXurEO3D1zjmqbSCRkbCc7Yjo'
+API_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 CHANNEL_ID = 'UC47eU0u4OCMVr8PrVYjrRtg' #mclively 
 
 
