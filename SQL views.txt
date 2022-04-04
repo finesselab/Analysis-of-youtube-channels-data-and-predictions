@@ -1,4 +1,4 @@
-1.
+1. VIDEO UPLOAD INTERVALS.
 
 CREATE   VIEW [dbo].[broda_shaggi_upload_intervals] AS
 
@@ -55,7 +55,7 @@ SELECT *
 FROM broda_shaggi_upload_intervals
 
 
-2.
+2. MONTHLY RUNNING TOTAL OF VIEWS & SIX MONTHS MOVING AVERAGE OF VIEWS.
 
 
 CREATE   VIEW [dbo].[monthly_running_total_6monthsMA] AS 
@@ -113,101 +113,43 @@ CREATE   VIEW [dbo].[monthly_running_total_6monthsMA] AS
 
 
 
-3.
+3. REGRESSION MODELING DATA
 
 
+CREATE VIEW modeling_data AS
+SELECT video_id, 'Broda Shaggi' AS comedian, YEAR(upload_date) AS [year],
+		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
+        duration AS video_duration, view_count, like_count,
+		DATENAME(weekday, upload_date) AS day_of_week,
+		CASE DATENAME(weekday, upload_date) 
+			WHEN 'Saturday' THEN 'Weekend'
+			WHEN 'Sunday' THEN 'Weekend'
+			ELSE 'Weekday'
+		END AS weekend_weekday
 
-
-CREATE   VIEW [dbo].[boxplot_no_outliers_2019above] AS
---shaggi
-WITH quartile1_3_1 AS (
-	SELECT TOP 1
-		PERCENTILE_CONT(0.25) WITHIN GROUP(ORDER BY view_count)
-			OVER() AS Q1,
-		PERCENTILE_CONT(0.75) WITHIN GROUP(ORDER BY view_count)
-			OVER() AS Q3
-	FROM broda_shaggi3
-	WHERE upload_date >= '2019-01-01'),
-
-
-
-outliers_removed1 AS ( SELECT video_id, upload_date,'Broda Shaggi' AS comedian, title, view_count
 FROM broda_shaggi3
-WHERE view_count BETWEEN (SELECT Q1 - (1.5 * (Q3 - Q1))  AS lower_bound
-						   FROM quartile1_3_1)
-						   AND
-						(SELECT Q3 + (1.5 * (Q3 - Q1)) AS upper_bound
-						   FROM quartile1_3_1) 
-					AND upload_date >= '2019-01-01'
-						),
---taaooma
-quartile1_3_2 AS (
-	SELECT TOP 1
-		PERCENTILE_CONT(0.25) WITHIN GROUP(ORDER BY view_count)
-			OVER() AS Q1,
-		PERCENTILE_CONT(0.75) WITHIN GROUP(ORDER BY view_count)
-			OVER() AS Q3
-	FROM taaooma
-	WHERE upload_date >= '2019-01-01'),
+WHERE YEAR(upload_date) >= 2019
 
+ UNION
 
+SELECT video_id, 'Mc_lively' AS comedian,YEAR(upload_date) AS [year],
+		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
+        duration AS video_duration, view_count, like_count,
+		DATENAME(weekday, upload_date) AS day_of_week,
+		CASE DATENAME(weekday, upload_date) 
+			WHEN 'Saturday' THEN 'Weekend'
+			WHEN 'Sunday' THEN 'Weekend'
+			ELSE 'Weekday'
+		END AS weekend_weekday
 
-outliers_removed2 AS ( SELECT video_id, upload_date,'Taaooma' AS comedian, title, view_count
-FROM taaooma
-WHERE view_count BETWEEN (SELECT Q1 - (1.5 * (Q3 - Q1))  AS lower_bound
-						   FROM quartile1_3_2)
-						   AND
-						(SELECT Q3 + (1.5 * (Q3 - Q1)) AS upper_bound
-						   FROM quartile1_3_2)
-						AND upload_date >= '2019-01-01'
-						),
-
---macaroni
-quartile1_3_3 AS (
-	SELECT TOP 1
-		PERCENTILE_CONT(0.25) WITHIN GROUP(ORDER BY view_count)
-			OVER() AS Q1,
-		PERCENTILE_CONT(0.75) WITHIN GROUP(ORDER BY view_count)
-			OVER() AS Q3
-	FROM mr_macaroni
-	WHERE upload_date >= '2019-01-01'),
-
-
-
-outliers_removed3 AS ( SELECT video_id, upload_date,'Mr Macaroni' AS comedian, title, view_count
-FROM mr_macaroni
-WHERE view_count BETWEEN (SELECT Q1 - (1.5 * (Q3 - Q1))  AS lower_bound
-						   FROM quartile1_3_3)
-						   AND
-						(SELECT Q3 + (1.5 * (Q3 - Q1)) AS upper_bound
-						   FROM quartile1_3_3)
-						AND upload_date >= '2019-01-01'
-						),
-
---mc_lively
-quartile1_3_4 AS (
-	SELECT TOP 1
-		PERCENTILE_CONT(0.25) WITHIN GROUP(ORDER BY view_count)
-			OVER() AS Q1,
-		PERCENTILE_CONT(0.75) WITHIN GROUP(ORDER BY view_count)
-			OVER() AS Q3
-	FROM mc_lively
-	WHERE upload_date >= '2019-01-01'),
-
-
-
-outliers_removed4 AS ( SELECT video_id, upload_date,'Mc lively' AS comedian, title, view_count
 FROM mc_lively
-WHERE view_count BETWEEN (SELECT Q1 - (1.5 * (Q3 - Q1))  AS lower_bound
-						   FROM quartile1_3_4)
-						   AND
-						(SELECT Q3 + (1.5 * (Q3 - Q1)) AS upper_bound
-						   FROM quartile1_3_4)
-						AND upload_date >= '2019-01-01'
-						)
+WHERE YEAR(upload_date) >= 2019
 
---shaggi
-SELECT video_id, upload_date, comedian, title, view_count, 
+UNION
+
+SELECT video_id, 'Mr macaroni' AS comedian, YEAR(upload_date) AS [year],
+		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
+        duration AS video_duration, view_count, like_count,
 		DATENAME(weekday, upload_date) AS day_of_week,
 		CASE DATENAME(weekday, upload_date) 
 			WHEN 'Saturday' THEN 'Weekend'
@@ -215,11 +157,14 @@ SELECT video_id, upload_date, comedian, title, view_count,
 			ELSE 'Weekday'
 		END AS weekend_weekday
 
-FROM outliers_removed1
+FROM mr_macaroni
+WHERE YEAR(upload_date) >= 2019
 
-UNION --Taaooma
+UNION
 
-SELECT video_id, upload_date, comedian, title, view_count, 
+SELECT video_id, 'Taaooma' AS comedian, YEAR(upload_date) AS [year],
+		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
+        duration AS video_duration, view_count, like_count,
 		DATENAME(weekday, upload_date) AS day_of_week,
 		CASE DATENAME(weekday, upload_date) 
 			WHEN 'Saturday' THEN 'Weekend'
@@ -227,31 +172,13 @@ SELECT video_id, upload_date, comedian, title, view_count,
 			ELSE 'Weekday'
 		END AS weekend_weekday
 
-FROM outliers_removed2
+FROM taaooma
+WHERE YEAR(upload_date) >= 2019
 
-UNION --Macaroni
 
-SELECT video_id, upload_date, comedian, title, view_count, 
-		DATENAME(weekday, upload_date) AS day_of_week,
-		CASE DATENAME(weekday, upload_date) 
-			WHEN 'Saturday' THEN 'Weekend'
-			WHEN 'Sunday' THEN 'Weekend'
-			ELSE 'Weekday'
-		END AS weekend_weekday
 
-FROM outliers_removed3
 
-UNION --Mc lively
 
-SELECT video_id, upload_date, comedian, title, view_count, 
-		DATENAME(weekday, upload_date) AS day_of_week,
-		CASE DATENAME(weekday, upload_date) 
-			WHEN 'Saturday' THEN 'Weekend'
-			WHEN 'Sunday' THEN 'Weekend'
-			ELSE 'Weekday'
-		END AS weekend_weekday
-
-FROM outliers_removed4
 
 
 
