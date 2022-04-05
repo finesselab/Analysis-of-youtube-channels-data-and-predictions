@@ -116,10 +116,14 @@ CREATE   VIEW [dbo].[monthly_running_total_6monthsMA] AS
 3. REGRESSION MODELING DATA
 
 
-CREATE VIEW modeling_data AS
-SELECT video_id, 'Broda Shaggi' AS comedian, YEAR(upload_date) AS [year],
+CREATE VIEW modeling_data2 AS 
+SELECT *, COUNT(*) OVER(PARTITION BY year_month) AS monthly_videos_count
+
+FROM (
+    SELECT video_id, 'Broda Shaggi' AS comedian, YEAR(upload_date) AS [year],
+		CAST(upload_date AS VARCHAR(7)) AS year_month,
 		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
-        duration AS video_duration, view_count, like_count,
+        	duration AS video_duration, view_count, like_count,
 		DATENAME(weekday, upload_date) AS day_of_week,
 		CASE DATENAME(weekday, upload_date) 
 			WHEN 'Saturday' THEN 'Weekend'
@@ -127,14 +131,18 @@ SELECT video_id, 'Broda Shaggi' AS comedian, YEAR(upload_date) AS [year],
 			ELSE 'Weekday'
 		END AS weekend_weekday
 
-FROM broda_shaggi3
-WHERE YEAR(upload_date) >= 2019
+     FROM broda_shaggi3
+     WHERE YEAR(upload_date) >= 2019) as a
 
  UNION
 
-SELECT video_id, 'Mc_lively' AS comedian,YEAR(upload_date) AS [year],
+SELECT *, COUNT(*) OVER(PARTITION BY year_month) AS monthly_videos_count
+
+FROM (
+	SELECT video_id, 'Mc_lively' AS comedian,YEAR(upload_date) AS [year],
+		CAST(upload_date AS VARCHAR(7)) AS year_month,
 		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
-        duration AS video_duration, view_count, like_count,
+        	duration AS video_duration, view_count, like_count,
 		DATENAME(weekday, upload_date) AS day_of_week,
 		CASE DATENAME(weekday, upload_date) 
 			WHEN 'Saturday' THEN 'Weekend'
@@ -142,14 +150,18 @@ SELECT video_id, 'Mc_lively' AS comedian,YEAR(upload_date) AS [year],
 			ELSE 'Weekday'
 		END AS weekend_weekday
 
-FROM mc_lively
-WHERE YEAR(upload_date) >= 2019
+        FROM mc_lively
+	WHERE YEAR(upload_date) >= 2019) as a
 
 UNION
 
-SELECT video_id, 'Mr macaroni' AS comedian, YEAR(upload_date) AS [year],
+SELECT *, COUNT(*) OVER(PARTITION BY year_month) AS monthly_videos_count
+
+FROM (
+	SELECT video_id, 'Mr macaroni' AS comedian, YEAR(upload_date) AS [year],  
+		CAST(upload_date AS VARCHAR(7)) AS year_month,
 		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
-        duration AS video_duration, view_count, like_count,
+       		duration AS video_duration, view_count, like_count,
 		DATENAME(weekday, upload_date) AS day_of_week,
 		CASE DATENAME(weekday, upload_date) 
 			WHEN 'Saturday' THEN 'Weekend'
@@ -157,14 +169,19 @@ SELECT video_id, 'Mr macaroni' AS comedian, YEAR(upload_date) AS [year],
 			ELSE 'Weekday'
 		END AS weekend_weekday
 
-FROM mr_macaroni
-WHERE YEAR(upload_date) >= 2019
+	FROM mr_macaroni
+	WHERE YEAR(upload_date) >= 2019) as a
 
 UNION
 
-SELECT video_id, 'Taaooma' AS comedian, YEAR(upload_date) AS [year],
+SELECT *, COUNT(*) OVER(PARTITION BY year_month) AS monthly_videos_count
+
+FROM (
+
+	SELECT video_id, 'Taaooma' AS comedian, YEAR(upload_date) AS [year],
+		CAST(upload_date AS VARCHAR(7)) AS year_month,
 		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
-        duration AS video_duration, view_count, like_count,
+       	        duration AS video_duration, view_count, like_count,
 		DATENAME(weekday, upload_date) AS day_of_week,
 		CASE DATENAME(weekday, upload_date) 
 			WHEN 'Saturday' THEN 'Weekend'
@@ -172,10 +189,11 @@ SELECT video_id, 'Taaooma' AS comedian, YEAR(upload_date) AS [year],
 			ELSE 'Weekday'
 		END AS weekend_weekday
 
-FROM taaooma
-WHERE YEAR(upload_date) >= 2019
+	FROM taaooma
+	WHERE YEAR(upload_date) >= 2019) as a
 
 
+	
 
 
 
