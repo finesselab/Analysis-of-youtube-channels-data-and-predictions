@@ -79,107 +79,49 @@ final_df = pd.concat([final_df, preds], axis = 1)
 
 ###CREATE PREDICTIONS TABLE IN DATABASE
 
-# query = '''
-#     CREATE TABLE predictions (
-#         video_id varchar(max) NULL,
-#         comedian varchar(max) NULL,
-#         gender varchar(3) NULL,
-#         year varchar(max) NULL,
-#         year_month varchar(max) NULL,
-#         months_since_upload int NULL,
-#         video_duration int NULL,
-#         view_count int NULL,
-#         day_of_week varchar(max) NULL,
-#         weekend_weekday varchar(max) NULL, 
-#         monthly_videos_count int NULL, 
-#         like_count int NULL,
-#         likes_prediction int NULL)
-#     '''
+query = '''
+     DROP TABLE IF EXISTS predictions
+     CREATE TABLE predictions (
+         video_id varchar(max) NULL,
+         comedian varchar(max) NULL,
+         gender varchar(3) NULL,
+         year varchar(max) NULL,
+         year_month varchar(max) NULL,
+         months_since_upload int NULL,
+         video_duration int NULL,
+         view_count int NULL,
+         day_of_week varchar(max) NULL,
+         weekend_weekday varchar(max) NULL, 
+         monthly_videos_count int NULL, 
+         like_count int NULL,
+         likes_prediction int NULL)
+     '''
 
 
-# cursor.execute(query)
-# conn2.commit()
+cursor.execute(query)
+conn2.commit()
 
 ###INSERT PREDICTIONS DATA INTO TABLE
 
-# def insert_new_data_to_table(video_id, comedian, gender, year, year_month, months_since_upload,
-#                              video_duration, view_count, day_of_week, weekend_weekday, monthly_videos_count,
-#                              like_count, likes_prediction):
-#     query = '''
-#             INSERT INTO predictions (video_id, comedian, gender, year, year_month, months_since_upload,
-#                              video_duration, view_count, day_of_week, weekend_weekday, monthly_videos_count,
-#                              like_count, likes_prediction) 
-#             VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
-#     '''
-#     row_values_to_insert = (video_id, comedian, gender, year, year_month, months_since_upload,
-#                              video_duration, view_count, day_of_week, weekend_weekday, monthly_videos_count,
-#                              like_count, likes_prediction)
+def insert_new_data_to_table(video_id, comedian, gender, year, year_month, months_since_upload,
+                              video_duration, view_count, day_of_week, weekend_weekday, monthly_videos_count,
+                              like_count, likes_prediction):
+     query = '''
+             INSERT INTO predictions (video_id, comedian, gender, year, year_month, months_since_upload,
+                              video_duration, view_count, day_of_week, weekend_weekday, monthly_videos_count,
+                              like_count, likes_prediction) 
+             VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
+     '''
+     row_values_to_insert = (video_id, comedian, gender, year, year_month, months_since_upload,
+                              video_duration, view_count, day_of_week, weekend_weekday, monthly_videos_count,
+                              like_count, likes_prediction)
     
-#     cursor.execute(query, row_values_to_insert)
+     cursor.execute(query, row_values_to_insert)
 
-# for idx, row in final_df.iterrows():
-#     insert_new_data_to_table(row['video_id'], row['comedian'], row['gender'], row['year'], row['year_month'],
-#                        row['months_since_upload'], row['video_duration'], row['view_count'], row['day_of_week'],
-#                        row['weekend_weekday'], row['monthly_videos_count'], row['like_count'], row['likes_prediction'])
-
-#conn2.commit()
-
-
-###UPDATE PREDICTIONS TABLE
-
-def check_if_video_exists(video_id):
-    query = '''
-       SELECT *
-       FROM predictions
-       WHERE video_id = ?
-    '''
-    row = cursor.execute(query, (video_id,))
-    if row:
-        return row.fetchone()
-    else:
-        return None
-
-def update_row(view_count, like_count, likes_prediction, video_id):
-    query = '''
-            UPDATE predictions
-            SET 
-                view_count = ?,
-                like_count = ?,
-                likes_prediction = ?
-            WHERE video_id = ?
-    '''
-    vars_to_update = (view_count, like_count, likes_prediction, video_id)
-    cursor.execute(query, vars_to_update)
-
-
-
-def update_table(df):
-    temp_df = pd.DataFrame(columns = ['video_id', 'comedian', 'gender', 'year', 'year_month', 'months_since_upload',
-                    'video_duration', 'view_count', 'day_of_week', 'weekend_weekday', 'monthly_videos_count', 'like_count',
-                    'likes_prediction'])
-    for i, row in df.iterrows():
-        if check_if_video_exists(row['video_id']):
-            update_row(row['view_count'], row['like_count'], row['likes_prediction'], row['video_id'])
-        else:
-            temp_df = temp_df.append(row)
-            
-    return temp_df
-
-
-new_data_dff = update_table(final_df)
-print('Updated existing videos')
-
-###IF VIDEOS DATA IS NOT IN PREDICTIONS TABLE, ADD THE DATA TO THE TABLE
-
-if new_data_dff.empty:
-    print('No new data to add')
-    
-else:
-    for idx, row in new_data_dff.iterrows():
-        insert_new_data_to_table(row['video_id'], row['comedian'], row['gender'], row['year'], row['year_month'],
-                           row['months_since_upload'], row['video_duration'], row['view_count'], row['day_of_week'],
-                           row['weekend_weekday'], row['monthly_videos_count'], row['like_count'], row['likes_prediction'])
-    print('Added new data')
+for idx, row in final_df.iterrows():
+    insert_new_data_to_table(row['video_id'], row['comedian'], row['gender'], row['year'], row['year_month'],
+                        row['months_since_upload'], row['video_duration'], row['view_count'], row['day_of_week'],
+                        row['weekend_weekday'], row['monthly_videos_count'], row['like_count'], row['likes_prediction'])
 
 conn2.commit()
 
