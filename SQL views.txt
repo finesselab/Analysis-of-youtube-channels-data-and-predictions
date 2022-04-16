@@ -117,82 +117,67 @@ CREATE   VIEW [dbo].[monthly_running_total_6monthsMA] AS
 
 
 
-CREATE VIEW modeling_data3 AS 
-SELECT *, COUNT(*) OVER(PARTITION BY year_month) AS monthly_videos_count
 
-FROM (
-    SELECT video_id, 'Broda Shaggi' AS comedian, YEAR(upload_date) AS [year], 
+CREATE VIEW modeling_data AS 
+WITH sh_cte AS (
+SELECT video_id, 'Broda Shaggi' AS comedian, YEAR(upload_date) AS [year], 
 		CAST(upload_date AS VARCHAR(7)) AS year_month,
 		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
-        	duration AS video_duration, view_count, like_count,
-		DATENAME(weekday, upload_date) AS day_of_week,
-		CASE DATENAME(weekday, upload_date) 
-			WHEN 'Saturday' THEN 'Weekend'
-			WHEN 'Sunday' THEN 'Weekend'
-			ELSE 'Weekday'
-		END AS weekend_weekday
+        duration AS video_duration, view_count, comment_count,
+		AVG(view_count) OVER(ORDER BY upload_date ROWS BETWEEN 1 PRECEDING AND CURRENT ROW) as [2monthsViews_movingaverage],
+		like_count
 
-     FROM broda_shaggi3) as a
+FROM broda_shaggi3),
 
- UNION
-
-SELECT *, COUNT(*) OVER(PARTITION BY year_month) AS monthly_videos_count
-
-FROM (
-	SELECT video_id, 'Mc_lively' AS comedian,YEAR(upload_date) AS [year], 
+mc_cte AS (
+SELECT video_id, 'Mc_lively' AS comedian, YEAR(upload_date) AS [year], 
 		CAST(upload_date AS VARCHAR(7)) AS year_month,
 		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
-        	duration AS video_duration, view_count, like_count,
-		DATENAME(weekday, upload_date) AS day_of_week,
-		CASE DATENAME(weekday, upload_date) 
-			WHEN 'Saturday' THEN 'Weekend'
-			WHEN 'Sunday' THEN 'Weekend'
-			ELSE 'Weekday'
-		END AS weekend_weekday
+                duration AS video_duration, view_count, comment_count,
+		AVG(view_count) OVER(ORDER BY upload_date ROWS BETWEEN 1 PRECEDING AND CURRENT ROW) as [2monthsViews_movingaverage],
+		like_count
 
-        FROM mc_lively) as a
+FROM mc_lively),
+
+mac_cte AS (
+SELECT video_id, 'Mr macaroni' AS comedian, YEAR(upload_date) AS [year], 
+		CAST(upload_date AS VARCHAR(7)) AS year_month,
+		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
+                duration AS video_duration, view_count, comment_count,
+		AVG(view_count) OVER(ORDER BY upload_date ROWS BETWEEN 1 PRECEDING AND CURRENT ROW) as [2monthsViews_movingaverage],
+		like_count
+
+FROM mr_macaroni),
+
+tao_cte AS (
+SELECT video_id, 'Taaooma' AS comedian, YEAR(upload_date) AS [year], 
+		CAST(upload_date AS VARCHAR(7)) AS year_month,
+		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
+                duration AS video_duration, view_count, comment_count,
+		AVG(view_count) OVER(ORDER BY upload_date ROWS BETWEEN 1 PRECEDING AND CURRENT ROW) as [2monthsViews_movingaverage],
+		like_count
+
+FROM taaooma)
+
+
+
+
+SELECT *, COUNT(*) OVER(PARTITION BY year_month) AS monthly_videos_count
+FROM sh_cte
+
+UNION
+SELECT *, COUNT(*) OVER(PARTITION BY year_month) AS monthly_videos_count
+FROM mc_cte
 
 UNION
 
 SELECT *, COUNT(*) OVER(PARTITION BY year_month) AS monthly_videos_count
-
-FROM (
-	SELECT video_id, 'Mr macaroni' AS comedian, YEAR(upload_date) AS [year], 
-		CAST(upload_date AS VARCHAR(7)) AS year_month,
-		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
-       		duration AS video_duration, view_count, like_count,
-		DATENAME(weekday, upload_date) AS day_of_week,
-		CASE DATENAME(weekday, upload_date) 
-			WHEN 'Saturday' THEN 'Weekend'
-			WHEN 'Sunday' THEN 'Weekend'
-			ELSE 'Weekday'
-		END AS weekend_weekday
-
-	FROM mr_macaroni) as a
+FROM mac_cte
 
 UNION
 
 SELECT *, COUNT(*) OVER(PARTITION BY year_month) AS monthly_videos_count
-
-FROM (
-
-	SELECT video_id, 'Taaooma' AS comedian, YEAR(upload_date) AS [year], 
-		CAST(upload_date AS VARCHAR(7)) AS year_month,
-		DATEDIFF(MONTH, upload_date, CAST(GETDATE() AS DATE)) AS months_since_upload,
-       	        duration AS video_duration, view_count, like_count,
-		DATENAME(weekday, upload_date) AS day_of_week,
-		CASE DATENAME(weekday, upload_date) 
-			WHEN 'Saturday' THEN 'Weekend'
-			WHEN 'Sunday' THEN 'Weekend'
-			ELSE 'Weekday'
-		END AS weekend_weekday
-
-	FROM taaooma) as a
-
-
-
-
-
+FROM tao_cte
 
 
 
