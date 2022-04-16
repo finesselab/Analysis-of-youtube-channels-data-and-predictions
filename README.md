@@ -2,7 +2,7 @@
 
 
 
-## DATA COLLECTION
+## Data Collection
    ETL (Extract Transform Load) scripts were written for collecting videos data from comedians respective youtube 
    channel(s) via youtube API.
    - Pandas dataframes were built with the collected data which were in json format, the data was cleaned subsequently.
@@ -11,10 +11,10 @@
 
 
 
-## ANALYSIS
+## Analysis
    1. Database views(code in SQL views file) were created from the tables as base reports for POWER BI visualization.
   
-   ### Predictive model
+   #### Predictive model
    2. Also, a 'modeling data' view was created for exploring the relationship between different variables.
 
       The modeling data was also used for training and evaluating a 'likes_count' prediction model.
