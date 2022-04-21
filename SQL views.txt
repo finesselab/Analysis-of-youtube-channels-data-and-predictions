@@ -1,6 +1,29 @@
-1. VIDEO UPLOAD INTERVALS.
+1. ONE OF THE TABLES USED
 
-CREATE   VIEW [dbo].[broda_shaggi_upload_intervals] AS
+ CREATE TABLE broda_shaggi3(
+	[video_id] [varchar](max) NULL,
+	[upload_date] [date] NULL,
+	[upload_time] [varchar](max) NULL,
+	[title] [varchar](max) NULL,
+	[cast1] [varchar](max) NULL,
+	[cast2] [varchar](max) NULL,
+	[cast3] [varchar](max) NULL,
+	[cast4] [varchar](max) NULL,
+	[cast5] [varchar](max) NULL,
+	[cast6] [varchar](max) NULL,
+	[cast7] [varchar](max) NULL,
+	[view_count] [int] NULL,
+	[like_count] [int] NULL,
+	[dislike_count] [int] NULL,
+	[comment_count] [int] NULL,
+	[duration] [int] NULL
+) 
+
+
+
+2. VIDEO UPLOAD INTERVALS.
+
+CREATE  VIEW [dbo].[broda_shaggi_upload_intervals] AS
 
 WITH current_last_upload_date AS (
 
@@ -55,7 +78,7 @@ SELECT *
 FROM broda_shaggi_upload_intervals
 
 
-2. MONTHLY RUNNING TOTAL OF VIEWS & SIX MONTHS MOVING AVERAGE OF VIEWS.
+3. MONTHLY RUNNING TOTAL OF VIEWS & SIX MONTHS MOVING AVERAGE OF VIEWS.
 
 
 CREATE   VIEW [dbo].[monthly_running_total_6monthsMA] AS 
@@ -113,7 +136,7 @@ CREATE   VIEW [dbo].[monthly_running_total_6monthsMA] AS
 
 
 
-3. MODELING DATA
+4. MODELING DATA
 
 
 
