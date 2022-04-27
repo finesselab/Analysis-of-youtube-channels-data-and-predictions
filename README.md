@@ -18,8 +18,8 @@
    2. Also, a 'modeling data' view was created for exploring the relationship between different variables.
 
       The modeling data was also used for training and evaluating a 'likes_count' prediction model.
-      The XGBoost regressor model predicts the number of likes of new videos with a Mean Absolute Error of 1200. The predictions
-      are concatenated to the new data dataframe and uploaded to MS-SQL database running on AWS RDS.
+      The XGBoost regressor model predicts the number of likes of new videos with a Mean Absolute Error of 1200. 
+      The predictions are concatenated to the new data dataframe and uploaded to MS-SQL database running on AWS RDS.
 
       The production code for the prediction model is in 'production ml code' folder which runs through a 
       cronjob on an AWS Linux EC2 instance. 
